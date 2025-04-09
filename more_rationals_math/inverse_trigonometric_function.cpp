@@ -8,7 +8,7 @@ mpq_class arctan(const mpq_class& x) {
     debug_printf("When calculate tan^-1(x), x^2 is calculated as: %\n", x2);
 
     mpq_class diviser, deductor;
-    diviser = constants::ODD_NUMBERS[default_continued_fraction_truncate_depth];
+    diviser = mpq_integers.ODD_NUMBERS[default_continued_fraction_truncate_depth];
 
     #ifdef DEBUG_PRINT_MORE
     debug_printf("When calculate tan^-1(x), initial diviser is calculated as: %\n", diviser);
@@ -16,8 +16,8 @@ mpq_class arctan(const mpq_class& x) {
 
     for (auto i = default_continued_fraction_truncate_depth; i > 0; i--)
     {
-        deductor = constants::SQUARED_NATURE_NUMBERS[i - 1] * x2 / diviser;
-        diviser = constants::ODD_NUMBERS[i - 1] + deductor;
+        deductor = mpq_integers.SQUARED_NATURE_NUMBERS[i - 1] * x2 / diviser;
+        diviser = mpq_integers.ODD_NUMBERS[i - 1] + deductor;
         #ifdef DEBUG_PRINT_MORE
         debug_printf("When calculate tan^-1(x), the %d-th deductor is calculated as: %\n", i, deductor);
         debug_printf("When calculate tan^-1(x), the %d-th diviser is calculated as: %\n", i, diviser);
@@ -33,12 +33,7 @@ void mpq_arctan(mpq_t arctanx, const mpq_t x)
     return c_style_uniary_operator<arctan>(arctanx, x);
 };
 
-static const mpq_class PI = [](){
-    mpq_class one_five(1, 5);
-    mpq_class one_twothreenine(1, 239);
-    mpq_class result = 16 * arctan(one_five) - 4 * arctan(one_twothreenine);
-    return result;
-}();
+static const mpq_class PI = (mpq_class) mathematical_constant_t(mathematical_constant::PI);
 
 mpq_class arccos(const mpq_class& x) {
     if (x == 0) { return PI / 2; };

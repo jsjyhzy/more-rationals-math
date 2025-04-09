@@ -18,7 +18,7 @@ mpq_class sqrt(const mpq_class& x)
     debug_printf("When sqrt(x), the low bond of sqrt(x) is calculated as: %\n", floor_of_sqrt);
 
     const auto squared_floor_of_sqrt = floor_of_sqrt * floor_of_sqrt;
-    const auto addition = constants::TWO * floor_of_sqrt;
+    const auto addition = mpq_integers.TWO() * floor_of_sqrt;
     const auto dividend = x - squared_floor_of_sqrt;
 
     mpq_class divider = addition;

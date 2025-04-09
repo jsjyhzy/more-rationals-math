@@ -1,37 +1,23 @@
 #include <vector>
 #include <gmpxx.h>
 
-namespace constants
+// compile time const
+
+constexpr unsigned int MAX_TRUNCATE_DEPTH = 64;
+constexpr unsigned int DEFAULT_TRUNCATE_DEPTH = 24;
+
+struct linespace
 {
-    // compile time const
+    linespace();
+    const mpq_class *ODD_NUMBERS;
+    const mpq_class *POSITIVE_NATURE_NUMBERS;
+    const mpq_class *SQUARED_NATURE_NUMBERS;
 
-    constexpr unsigned int MAX_TRUNCATE_DEPTH = 64;
-    constexpr unsigned int DEFAULT_TRUNCATE_DEPTH = 24;
-
-    // runtime const
-
-    template <typename T>
-    std::vector<mpq_class> nature_linspace(T (*fx)(long x), unsigned long end_before, unsigned long start_at = 1)
-    {
-        std::vector<mpq_class> ret;
-        for (auto i = start_at; i < end_before; i++)
-        {
-            mpq_class y = fx(i);
-            ret.push_back(y);
-        };
-        return ret;
-    };
-
-    static const std::vector<mpq_class> ODD_NUMBERS = nature_linspace<long>([](long x){ return 2 * x - 1; }, MAX_TRUNCATE_DEPTH + 2);
-    static const std::vector<mpq_class> POSITIVE_NATURE_NUMBERS = nature_linspace<long>([](long x){ return x; }, MAX_TRUNCATE_DEPTH + 2);
-    const auto& NATURE_NUMBERS = POSITIVE_NATURE_NUMBERS;
-    const auto& ONE = NATURE_NUMBERS[0];
-    const auto& TWO = NATURE_NUMBERS[1];
-    static const std::vector<mpq_class> SQUARED_NATURE_NUMBERS = nature_linspace<long>([](long x){ return x * x; }, MAX_TRUNCATE_DEPTH + 2);
-
+    const mpq_class& ONE(void) const { return POSITIVE_NATURE_NUMBERS[0]; };
+    const mpq_class& TWO(void) const { return POSITIVE_NATURE_NUMBERS[1]; };
 };
 
-unsigned int default_continued_fraction_truncate_depth = constants::DEFAULT_TRUNCATE_DEPTH;
+extern const linespace mpq_integers;
 
 typedef mpq_class (*uniary_operator)(const mpq_class&);
 template <uniary_operator op>
